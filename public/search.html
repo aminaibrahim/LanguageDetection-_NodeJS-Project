@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</head>
+
+<body>
+
+
+    Enter keyword to search:
+    <br>
+    <textarea id="searchkeyword"></textarea>
+    <br>
+    <button onclick="searchFunction()">Search</button>
+    <br>
+
+    <div id="searchResult"></div>
+    <br>
+    <p>
+        <a href="http://localhost:3000/index.html">Visit Main Page</a>
+    </p>
+
+    <script>
+        function searchFunction() {
+            var keyword = document.getElementById("searchkeyword").value;
+            axios.get("http://localhost:3000/searchkeyword?searchkey=" + keyword)
+                .then(response => {
+
+                    if (response.data === "No Input Given") {
+                        document.getElementById("searchResult").innerHTML = response.data;
+                    }
+                    else if (response.data === "No matches found") {
+                        document.getElementById("searchResult").innerHTML = response.data;
+                    }
+                    else {
+
+                        const responseData = response.data
+                            .map((element, i) => ++i + " " + element)
+                            .reduce((prev, current) => prev + "<br>" + current)
+                        document.getElementById("searchResult").innerHTML = responseData;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
+    </script>
+</body>
+
+</html>
